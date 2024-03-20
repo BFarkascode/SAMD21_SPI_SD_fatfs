@@ -12,7 +12,6 @@
 
 
 #include "sam.h"
-#include <Arduino.h>
 
 //Function prototypes
 void SERCOM4_SPI_Master_400KHZ_init(void);
