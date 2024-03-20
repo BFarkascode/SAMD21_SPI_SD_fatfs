@@ -23,7 +23,7 @@
 */
 
 
-#include <C:\Users\BalazsFarkas(Lumiwor\Documents\Arduino\SD_card_custom_diskio_custom_integrated_fatfs\ff.h>
+#include <ff.h>
 
 #if FF_USE_LFN != 0	/* This module will be blanked if in non-LFN configuration */
 
