@@ -101,3 +101,5 @@ We won’t be extracting RTC data, thus the “get_fattime” function in line 2
 ### Additional notes
 We have a myriad of while loops in the code which may or may not freeze the execution. For a robust implementation – which this one isn’t – we would need to ensure that these loops time out after a while. This timeout could be done by having an external counter count down while the loop is active and then forcing it to finish when it reaches zero, or we could just limit the number of loop executions we allow to occur. The reason why I ignored to do so is because in my current application any failure on the SD card will demand a complete reset of the micro since I am not doing anything else anyway.
 
+The project is primarily to integrate fatfs and then manipulate files on the SDcard. Nevertheless, behinf #ifdef-s, I left the "crude" manipulation of the memory also available within the ino file. This crude version will directly write data to memory addresses and ignore any kind of file system that may or may not be on the card already. This can in some cases break the card to the point where it needs to be formatted before it can be used again with fatfs.
+
