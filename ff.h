@@ -27,7 +27,7 @@
 extern "C" {
 #endif
 
-#include <C:\Users\BalazsFarkas(Lumiwor\Documents\Arduino\SD_card_custom_diskio_custom_integrated_fatfs\ffconf.h>	/* FatFs configuration options */
+#include <ffconf.h>	/* FatFs configuration options */
 
 #if FF_DEFINED != FFCONF_DEF
 #error Wrong configuration file (ffconf.h).
