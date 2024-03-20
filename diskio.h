@@ -15,8 +15,8 @@
 #ifndef _DISKIO_DEFINED
 #define _DISKIO_DEFINED
 
-#include <C:\Users\BalazsFarkas(Lumiwor\Documents\Arduino\SD_card_custom_diskio_custom_integrated_fatfs\BFSD.h>
-#include <C:\Users\BalazsFarkas(Lumiwor\Documents\Arduino\SD_card_custom_diskio_custom_integrated_fatfs\ff.h>
+#include <BFSD.h>
+#include <ff.h>
 
 #ifdef __cplusplus
 extern "C" {
