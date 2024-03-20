@@ -6,8 +6,8 @@ Currently all diskio functions work.
 
 #include <Arduino.h>
 #include <stdlib.h>
-#include <C:\Users\BalazsFarkas(Lumiwor\Documents\Arduino\SD_card_custom_diskio_custom_integrated_fatfs\ff.h>
-#include <C:\Users\BalazsFarkas(Lumiwor\Documents\Arduino\SD_card_custom_diskio_custom_integrated_fatfs\diskio.h>
+#include <ff.h>
+#include <diskio.h>
 
 
 FATFS fs;             //file system
