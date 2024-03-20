@@ -20,8 +20,8 @@
 
 
 #include <string.h>
-#include <C:\Users\BalazsFarkas(Lumiwor\Documents\Arduino\SD_card_custom_diskio_custom_integrated_fatfs\ff.h>			/* Declarations of FatFs API */
-#include <C:\Users\BalazsFarkas(Lumiwor\Documents\Arduino\SD_card_custom_diskio_custom_integrated_fatfs\diskio.h>		/* Declarations of device I/O functions */
+#include <ff.h>			/* Declarations of FatFs API */
+#include <diskio.h>		/* Declarations of device I/O functions */
 
 
 /*--------------------------------------------------------------------------
