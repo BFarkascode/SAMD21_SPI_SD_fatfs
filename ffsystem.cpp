@@ -2,7 +2,7 @@
 /* A Sample Code of User Provided OS Dependent Functions for FatFs        */
 /*------------------------------------------------------------------------*/
 
-#include <C:\Users\BalazsFarkas(Lumiwor\Documents\Arduino\SD_card_custom_diskio_custom_integrated_fatfs\ff.h>
+#include <ff.h>
 
 
 #if FF_USE_LFN == 3	/* Use dynamic memory allocation */
