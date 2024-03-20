@@ -32,7 +32,7 @@ Initializing the SPI on the SAMD21 is rather similar to how it is done on the ST
 2) There are multiple registers that needs a synch, namedly CTRLB and ENABLE. We can check this by checking the designated SYNCBUSY bit in the register.
 3) Baud rate is calculated by ((fclk0)/(2 * fSPI)) – 1. For 4 MHz, the baud will be (48MHz/(2 * 4MHz)) - 1 = 5.
 4) SERCOM pads need to be specific inputs/outputs. We can choose, which pads is on which GPIO though. The pad assignment is done in the CTRLA register. GPIO/Sercom is in the SAMD21 datasheet, section 7.
-5) 
+
 Apart from these, as I mentioned, the SPI driver is very similar to its STM32 counterpart and thus won’t be discussed any more detail. We are going to keep the SPI driver blocking to simply the code though.
 
 ### Putting together the SD library
