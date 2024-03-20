@@ -20,10 +20,10 @@ It is highly recommended to go through the following two documents to have a gra
 ## Particularities
 We will have 4 different layers within this project:
 
-1)SPI layer where we set up and activate the SPI module
-2)SD card layer where we set up the functions to send commands and data to the memory card via the SPI layer mentioned above.
-3)Diskio layer is the glue layer between the fatfs library and our SD card driver.
-4)High level is where we call the fatfs functions directly
+1) SPI layer where we set up and activate the SPI module
+2) SD card layer where we set up the functions to send commands and data to the memory card via the SPI layer mentioned above.
+3) Diskio layer is the glue layer between the fatfs library and our SD card driver.
+4) High level is where we call the fatfs functions directly
 
 ### Setting up SPI
 Initializing the SPI on the SAMD21 is rather similar to how it is done on the STM32 with a few notable exemptions:
