@@ -14,7 +14,7 @@
 
 #include "sam.h"
 #include "stdint.h"
-#include <C:\Users\BalazsFarkas(Lumiwor\Documents\Arduino\SD_card_custom_diskio_custom_integrated_fatfs\BFSPI.h>
+#include <BFSPI.h>
 
 //card type
 #define SD_TYPE_NMC				0
