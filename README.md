@@ -2,20 +2,24 @@
 SD card driver on a SAMD21 using bare metal programming. Interfacing done with latest fatfs.
 
 ## General description
-AS mentioned in my project for the SAMD21 bootmaster for the STM32 bootloader, I haven’t been to happy with the Arduino-based solution I have presented there. The code was sketchy at best, with strange behaviour (“black magic“) that I could not get around, no matter how much I tired. Thus, it was only a matter of time before I have decided to put my nose to the grindstone and come up with a way to replace the SD library of Arduino with something home-made. This project is the result of this work. 
+AS mentioned in my project for the SAMD21 bootmaster for the STM32 bootloader, I haven’t been to happy with the Arduino-based solution I have presented there. The code was sketchy at best, with strange behaviour (“black magic“) that I could not get around, no matter how much I tired. Thus, it was only a matter of time before I have decided to put my nose to the grindstone and come up with a way to replace the SD library of Arduino with something home-made. This project is the result of this work.
+
 Of note, I had been using this source (SD card using SPI in STM32 » ControllersTech) heavily while generating my own version of this project. I practically had to reverse engineer its driver file since there was no alternative source to figure out, how to set up the SD driver and the SD documentation isn’t very good.
 
 ## Previous relevant projects
 The following projects should be checked:
+
 -	STM32_SPIDriver
 
 ## To read
 It is highly recommended to go through the following two documents to have a grasp over what is going on (albeit I used both of them tangentially only and reverted to reverse engineering someone else’s code to find answers in the end, see above):
-Fatfs library documentation FatFs - Generic FAT Filesystem Module (elm-chan.org)
-SD card documentation SD.pdf (mit.edu)
+
+-	Fatfs library documentation FatFs - Generic FAT Filesystem Module (elm-chan.org)
+-	SD card documentation SD.pdf (mit.edu)
 
 ## Particularities
 We will have 4 different layers within this project:
+
 1)SPI layer where we set up and activate the SPI module
 2)SD card layer where we set up the functions to send commands and data to the memory card via the SPI layer mentioned above.
 3)Diskio layer is the glue layer between the fatfs library and our SD card driver.
