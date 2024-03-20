@@ -8,7 +8,7 @@
  */ 
 
 
-#include <C:\Users\BalazsFarkas(Lumiwor\Documents\Arduino\SD_card_custom_diskio_custom_integrated_fatfs\BFSD.h>
+#include <BFSD.h>
 
 
 //1)SERCOM SPI init
