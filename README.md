@@ -2,38 +2,43 @@
 SD card driver on a SAMD21 using bare metal programming. Interfacing done with latest fatfs.
 
 ## General description
-AS mentioned in my project for the SAMD21 bootmaster for the STM32 bootloader, I haven’t been to happy with the Arduino-based solution I have presented there. The code was sketchy at best, with strange behaviour (“black magic“) that I could not get around, no matter how much I tired. Thus, it was only a matter of time before I have decided to put my nose to the grindstone and come up with a way to replace the SD library of Arduino with something home-made. This project is the result of this work.
+As mentioned in my project for the SAMD21 bootmaster controller for my STM32 bootloader, I haven’t been to happy with the Arduino-based solution I have presented there beforehand. Yes, it was functional, but at the same time, the code was sketchy at best, with some strange behaviour (“black magic“) that I could not get around, no matter how much I tired. Thus, it was only a matter of time before I have put my nose to the grindstone and come up with a way to replace the SD library of Arduino with something home-made. This project is the result of that work.
 
-Of note, I had been using this source (SD card using SPI in STM32 » ControllersTech) heavily while generating my own version of this project. I practically had to reverse engineer its driver file since there was no alternative source to figure out, how to set up the SD driver and the SD documentation isn’t very good.
+Of note, I had been using the source [SD card using SPI in STM32 » ControllersTech](https://controllerstech.com/sd-card-using-spi-in-stm32/) heavily while generating my own version of this project. I practically had to reverse engineer the Controllerstech driver file to get an understanding of what is going on. Unfortunately, there was no alternative source to figure out, how to set up the SD driver since the SD documentation wasn’t very good, nor was the Fatfs library website.
 
 ## Previous relevant projects
 The following projects should be checked:
 
 -	STM32_SPIDriver
+-	SAMD21_BootMaster
 
 ## To read
-It is highly recommended to go through the following two documents to have a grasp over what is going on (albeit I used both of them tangentially only and reverted to reverse engineering someone else’s code to find answers in the end, see above):
+It is somewhat recommended to go through the following two documents to have a grasp over what is going on, though I personally had a fair share of difficulties with them:
 
 -	Fatfs library documentation FatFs - Generic FAT Filesystem Module (elm-chan.org)
 -	SD card documentation SD.pdf (mit.edu)
 
+As I mentioned above, I used chiefly reverse engineering methods on someone else’s code to find answers in the end, since these officials documents were lacking.
+
 ## Particularities
 We will have 4 different layers within this project:
 
-1) SPI layer where we set up and activate the SPI module
-2) SD card layer where we set up the functions to send commands and data to the memory card via the SPI layer mentioned above.
-3) Diskio layer is the glue layer between the fatfs library and our SD card driver.
-4) High level is where we call the fatfs functions directly
+1) SPI layer where we set up and activate the SPI module within the SAMD21
+2) SD card layer where we set up the functions to send commands and data to the memory card via the SPI layer mentioned above
+3) The "diskio" layer which is the glue layer between the fatfs library and our SD card driver
+4) High level where we call the fatfs functions
+
+These layers should be merged seemlessly to allow a good flow of data, commands and information. Below I will take a closer look into them to show, what particularities are to be considered in each of them.
 
 ### Setting up SPI
-Initializing the SPI on the SAMD21 is rather similar to how it is done on the STM32 with a few notable exemptions:
+Initializing the SPI on the SAMD21 is rather similar to how it is done on the STM32 with a few notable caveats:
 
-1) Port configuration is for PMUX is organized into pairs of “even” and “odd” groups. This means that even if we have chosen the right PMUX pin, then even or the odd values must be updated, depending on if the pin number is even or odd. (A good example for this would be "PORT->Group[1].PMUX[10>>1].bit.PMUXE" which works, while "PORT->Group[1].PMUX[10>>1].bit.PMUXO" would not.)
-2) There are multiple registers that needs a synch, namedly CTRLB and ENABLE. We can check this by checking the designated SYNCBUSY bit in the register.
-3) Baud rate is calculated by ((fclk0)/(2 * fSPI)) – 1. For 4 MHz, the baud will be (48MHz/(2 * 4MHz)) - 1 = 5.
-4) SERCOM pads need to be specific inputs/outputs. We can choose, which pads is on which GPIO though. The pad assignment is done in the CTRLA register. GPIO/Sercom is in the SAMD21 datasheet, section 7.
+1) Port configuration is for PMUX is organized into pairs of “even” and “odd” groups. This means that even if we have chosen the right PMUX pin, the even or the odd values must be updated, depending on if the pin number. (A good example for this is "PORT->Group[1].PMUX[10>>1].bit.PMUXE" which works, while "PORT->Group[1].PMUX[10>>1].bit.PMUXO" would not. Why? Because 10 is an even number, so we need to update the PMUXE part of the register, not he PMUXO.)
+2) There are multiple registers that need a synch, namedly CTRLB and ENABLE. We can check the synch by checking the designated SYNCBUSY bit in the register.
+3) Baud rate is calculated by ((fclk0)/(2 * fSPI)) – 1, where flck0 is the clock source of the SERCOM and fSPI is the desired baud rate in Hz. For 4 MHz with a standard 48 MHz fclk0, the baud will be (48MHz/(2 * 4MHz)) - 1 = 5.
+4) SERCOM pads need to be specific inputs/outputs. We can choose, which pad is on which GPIO though throughout the configuration of the SERCOM. The pad assignment is done in the CTRLA register. (GPIO/Sercom is in the SAMD21 datasheet, section 7.)
 
-Apart from these, as I mentioned, the SPI driver is very similar to its STM32 counterpart and thus won’t be discussed any more detail. We are going to keep the SPI driver blocking to simply the code though.
+Apart from these,  the SPI driver is very similar to its STM32 counterpart and thus won’t be discussed any more detail. We are going to keep the SPI driver blocking to simply the code though.
 
 ### Putting together the SD library
 
