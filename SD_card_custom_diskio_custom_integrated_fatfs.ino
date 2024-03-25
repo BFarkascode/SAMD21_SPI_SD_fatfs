@@ -1,7 +1,12 @@
 /*
-The code below is to merge the custom SD card driver with the diskio functions.
-Currently all diskio functions work.
-
+ *  Author: BalazsFarkas
+ *  Project: SAMD21_SPI_SD_fatfs
+ *  Processor: SAMD21G18
+ *  Compiler: ARM-GCC (STM32 IDE)
+ *  Program version: 1.1
+ *  File: SAMD21_SPI_SD_fatfs.ino
+ *  Hardware description/pin distribution:
+ *  Change history: 
 */
 
 #include <Arduino.h>
