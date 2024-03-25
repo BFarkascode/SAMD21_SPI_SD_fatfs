@@ -97,20 +97,20 @@ GET_SECTOR_COUNT will give back the “c_size” bits that we extract from the C
 In the end, I simply kept the framing provided by the diskio layer and then filled it up with custom SD card driver functions.
 
 ### Fatfs on highest level
-Fatfs uses structs. We need to fill the structs up each time with the parameters related directly to the file we wish to use in order to have the appropriate behaviour/outcome. Also, sometimes we have one struct, sometimes we have multiple, each of them having their own call function (f_open for FIL, f_stat for FILINFO). Once all information is extracted and plugged into the right sections, the fatfs library will handle the files for you using its own set of functions. Mind, we aren’t using huge sections of the fatfs library. 
-With our basic activities, will use f_open (which calls “mount_volume”), f_close, f_stat, f_read and f_write and nothing else. This is useful to decide ahead of time since when we check the execution of these functions, we will be able to also see, which diskio functions are being called by them (and with which parameters, if any). To be precise:
+Fatfs uses structs. We need to fill these structs up each time with the parameters related directly to the file we wish to use in order to have the appropriate behaviour/outcome from the fatfs library. Sometimes we have one struct, sometimes we have multiple, each of them having their own call function (f_open for FIL, f_stat for FILINFO). Once all information is extracted and plugged into the right sections, the fatfs library will handle the files for us using its own set of functions.
+
+Mind, in thsi project, we aren’t using multiple sections of the fatfs library. With our basic activities, will use f_open (which calls “mount_volume”), f_close, f_stat, f_read and f_write and nothing else. This is useful to decide ahead of time since when we check the execution of these functions, we will also be able to also see, which diskio functions are being called by them (and with which parameters, if any). To be precise:
 
 - we will call disk_init in f_open by proxy “mount_volume”
 - we call disk_status in “mount_volume”
 - we call disk_ioctl in “mount_volume” with the command GET_SECTOR_SIZE and some other places using CTRL_SYNC. The cmd that are not called, we will simply ignore during our implementation of the diskio cmd center (see “disk_ioctl” function in the diskio layer).
 - disk_read is called in f_open, f_write
-- disk_write is called all the time
+- disk_write is called at multiple places
 
-We won’t be extracting RTC data, thus the “get_fattime” function in line 276 of “ff.cpp” timestamp section will need to be either removed or given the same values as for line 274. That’s because we don’t have an RTC on our microcontroller.
-
+We won’t be extracting RTC data, thus the “get_fattime” function in line 276 of “ff.cpp” timestamp section will need to be either removed or given the same values as for line 274.
 
 ### Additional notes
-We have a myriad of while loops in the code which may or may not freeze the execution. For a robust implementation – which this one isn’t – we would need to ensure that these loops time out after a while. This timeout could be done by having an external counter count down while the loop is active and then forcing it to finish when it reaches zero, or we could just limit the number of loop executions we allow to occur. The reason why I ignored to do so is because in my current application any failure on the SD card will demand a complete reset of the micro since I am not doing anything else anyway.
+We have a myriad of while loops in the code which may or may not freeze the execution. For a robust implementation – which this one isn’t – we would need to ensure that these loops time out after a while. This timeout could be done by having an external counter count down while the loop is active and then forcing it to finish when it reaches zero, or we could just limit the number of loop executions we allow to occur. The reason why I ignored to do so is because in my current application any failure on the SD card will demand a complete reset of the micro anyway.
 
-The project is primarily to integrate fatfs and then manipulate files on the SDcard. Nevertheless, behinf #ifdef-s, I left the "crude" manipulation of the memory also available within the ino file. This crude version will directly write data to memory addresses and ignore any kind of file system that may or may not be on the card already. This can in some cases break the card to the point where it needs to be formatted before it can be used again with fatfs.
+The project is primarily to integrate fatfs and then manipulate files on the SDcard. Nevertheless, behind #ifdef-s, I left the "crude" manipulation of the memory also available within the ino file. This crude version will directly write data to memory addresses and ignore any kind of file system that may or may not be on the card already. This can in some cases break the card to the point where it needs to be formatted before it can be used again with fatfs.
 
