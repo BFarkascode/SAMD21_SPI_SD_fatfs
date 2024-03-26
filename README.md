@@ -1,5 +1,5 @@
 # SAMD21_SPI_SD_fatfs
-SD card driver on a SAMD21 using bare metal programming. Interfacing done with latest fatfs.bla
+SD card driver on a SAMD21 using bare metal programming. Interfacing done with latest fatfs.bblablala
 
 ## General description
 As mentioned in my project for the SAMD21 bootmaster controller for my STM32 bootloader, I haven’t been to happy with the Arduino-based solution I have presented there beforehand. Yes, it was functional, but at the same time, the code was sketchy at best, with some strange behaviour (“black magic“) that I could not get around, no matter how much I tired. Thus, it was only a matter of time before I have put my nose to the grindstone and come up with a way to replace the SD library of Arduino with something home-made. This project is the result of that work.
